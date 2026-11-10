@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Не попадись на крючок</title>
+<meta name="description" content="Как распознать фишинговое сообщение в СМС, мессенджере, почте или игре и что делать, если мошенники уже получили твои данные.">
+<style>
+:root{--bg:#fff;--text:#1f1f1d;--muted:#6b6863;--line:#e6e5e3;--soft:#f6f5f4;--accent:#1a66b5;--red:#b5392d;--red-bg:#fbe9e7;--green:#2c7650}
+@media (prefers-color-scheme:dark){:root{--bg:#191918;--text:#ecebe8;--muted:#a19e98;--line:#353431;--soft:#222220;--accent:#7ab0ec;--red:#ec8f85;--red-bg:#3a2522;--green:#7cc49c}}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+html{-webkit-text-size-adjust:100%;scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--text);font:17px/1.6 system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif}
+a{color:var(--accent)}
+.wrap{max-width:700px;margin:0 auto;padding:0 20px}
+.skip{position:absolute;left:-9999px}
+.skip:focus{left:12px;top:12px;background:var(--bg);padding:8px 12px;z-index:9}
+header{border-bottom:1px solid var(--line)}
+header .wrap{display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:6px 24px;padding-top:14px;padding-bottom:14px}
+.logo{font-weight:700;color:var(--text);text-decoration:none}
+nav{display:flex;flex-wrap:wrap;gap:4px 18px;font-size:15px}
+nav a{color:var(--muted);text-decoration:none}
+nav a:hover{color:var(--text);text-decoration:underline}
+main section{padding-top:56px}
+h1{font-size:34px;line-height:1.2;margin:8px 0 18px;letter-spacing:-.01em}
+h2{font-size:26px;line-height:1.25;margin:0 0 12px}
+h3{font-size:18px;line-height:1.35;margin:32px 0 8px}
+p{margin:0 0 14px}
+.muted{color:var(--muted)}
+.small{font-size:15px}
+.btn{display:inline-block;font:inherit;font-size:15px;line-height:1.3;padding:7px 12px;border-radius:6px;border:1px solid var(--line);background:transparent;color:var(--text);cursor:pointer}
+.btn:hover{border-color:var(--muted)}
+.btn:focus-visible,.hot:focus-visible,.tab:focus-visible,nav a:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.tabs{display:flex;gap:0 22px;overflow-x:auto;border-bottom:1px solid var(--line);margin:22px 0 20px;scrollbar-width:none}
+.tabs::-webkit-scrollbar{display:none}
+.tab{flex:none;font:inherit;font-size:16px;background:none;border:0;border-bottom:2px solid transparent;margin-bottom:-1px;padding:10px 0;min-height:44px;color:var(--muted);cursor:pointer}
+.tab:hover{color:var(--text)}
+.tab[aria-selected="true"]{color:var(--text);border-bottom-color:var(--text)}
+.msg{border:1px solid var(--line);border-radius:8px;padding:16px 18px;background:var(--soft);overflow-wrap:anywhere}
+.msg-from{font-size:14px;color:var(--muted);margin-bottom:6px}
+.hot{cursor:pointer;border-radius:3px;padding:1px 0;-webkit-tap-highlight-color:transparent}
+@media (hover:hover){.hot:hover{background:var(--line)}}
+.hot.found{background:var(--red-bg);box-shadow:inset 0 -2px 0 var(--red)}
+.hot.found::after{content:attr(data-id);font-size:12px;font-weight:700;color:var(--red);vertical-align:super;line-height:0;margin-left:2px}
+.status{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px;margin:12px 0 4px}
+.hint{min-height:1.6em;margin:0 0 6px}
+ol.finds{list-style:none;padding:0;margin:4px 0 0}
+ol.finds li{position:relative;padding-left:24px;margin-bottom:10px}
+ol.finds .n{position:absolute;left:0;top:0;color:var(--red);font-weight:600;font-variant-numeric:tabular-nums}
+.check{margin-top:18px;padding-top:14px;border-top:1px solid var(--line)}
+ol.steps{list-style:none;padding:0;margin:16px 0 8px}
+ol.steps li{border-top:1px solid var(--line)}
+ol.steps li:last-child{border-bottom:1px solid var(--line)}
+ol.steps label{display:flex;gap:12px;padding:12px 0;cursor:pointer}
+ol.steps input{width:20px;height:20px;margin:3px 0 0;flex:none;accent-color:var(--green)}
+ol.steps input:checked+span{color:var(--muted);text-decoration:line-through}
+table.phones{width:100%;border-collapse:collapse;margin-top:4px}
+.phones td{padding:10px 0;border-bottom:1px solid var(--line);vertical-align:top}
+.phones td+td{text-align:right;white-space:nowrap;font-weight:600;padding-left:16px}
+.phones a{text-decoration:none}
+footer{margin-top:72px;border-top:1px solid var(--line);padding:24px 0 40px;font-size:15px;color:var(--muted)}
+footer ul{padding-left:18px;margin:4px 0 0}
+footer p{margin-bottom:10px}
+.fill{background:#fff3b0;color:#1f1f1d;padding:0 2px;border-radius:2px}
+@media (max-width:520px){nav{font-size:14px;gap:4px 14px}body{font-size:16px}h1{font-size:28px}h2{font-size:23px}main section{padding-top:44px}.wrap{padding:0 16px}.tab{font-size:14px}.tabs{gap:0 12px}}
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Перейти к содержанию</a>
+<header>
+  <div class="wrap">
+    <a class="logo" href="#top">Не попадись на крючок</a>
+    <nav aria-label="Разделы">
+      <a href="#priznaki">Признаки</a>
+      <a href="#primery">Примеры</a>
+      <a href="#zashchita">Защита</a>
+      <a href="#pomosh">Если попался</a>
+    </nav>
+  </div>
+</header>
+
+<main id="main" class="wrap">
+  <section id="top">
+    <h1>Что такое фишинг и как его распознать</h1>
+    <p>Фишингом называют обман, при котором мошенник выдаёт себя за банк, магазин, игру или знакомого человека. Он присылает сообщение или звонит, чтобы ты назвал код из СМС или ввёл пароль на поддельном сайте.</p>
+    <p>Слово происходит от английского fishing, то есть «рыбалка». Человеку подбрасывают приманку и ждут, что он клюнет.</p>
+    <p>Такие сообщения приходят в СМС, мессенджерах, по почте и в чатах онлайн-игр. Мошенники также звонят и наклеивают поддельные QR-коды. В 2025 году они похитили у клиентов российских банков 29,3&nbsp;млрд рублей (<a href="https://cbr.ru/press/event?id=28300" target="_blank" rel="noopener">данные Банка России</a>).</p>
+    <p><a href="#pomosh">Я уже попался, что делать?</a></p>
+  </section>
+
+  <section id="priznaki">
+    <h2>Как распознать обман</h2>
+    <p>Чаще всего мошенник торопит или пугает. Например, пишет, что карту заблокируют через 30 минут, если ты сейчас же не перейдёшь по ссылке. Другой приём строится на подарке, который достаётся просто так, вроде выигрыша в конкурсе, где ты не участвовал, или бесплатной игровой валюты. В конце почти всегда просят код из СМС или данные карты.</p>
+    <p>Многое видно по ссылке. Адрес поддельного сайта похож на настоящий, но в нём есть лишнее слово или цифра 0 вместо буквы «о». Сокращённая ссылка не показывает, куда ведёт, поэтому по ней лучше не переходить.</p>
+    <p>Насторожить должно и обращение «Уважаемый клиент» вместо имени. Также подозрительна просьба установить приложение не из официального магазина.</p>
+    <p>Если друг пишет не так, как обычно, и просит денег или проголосовать по ссылке, его аккаунт могли взломать. Лучше позвонить ему и спросить.</p>
+    <h3>Что сотрудник банка никогда не попросит</h3>
+    <p>Настоящий сотрудник банка не спрашивает коды из СМС и данные карты. Он не предлагает перевести деньги на «безопасный счёт» и не просит установить программу для удалённого доступа к телефону. Если звонящий просит что-то такое, положи трубку и расскажи родителям.</p>
+  </section>
+
+  <section id="primery">
+    <h2>Примеры</h2>
+    <p>Здесь собраны сообщения, похожие на настоящие мошеннические рассылки. Выбери, откуда пришло сообщение, и попробуй найти в нём подозрительные места. Если нажать на такое место, появится объяснение.</p>
+
+    <div class="tabs" role="tablist" aria-label="Откуда пришло сообщение">
+      <button class="tab" role="tab" id="t-sms" aria-controls="p-sms" aria-selected="true" type="button">СМС</button>
+      <button class="tab" role="tab" id="t-chat" aria-controls="p-chat" aria-selected="false" tabindex="-1" type="button">Мессенджер</button>
+      <button class="tab" role="tab" id="t-call" aria-controls="p-call" aria-selected="false" tabindex="-1" type="button">Звонок</button>
+      <button class="tab" role="tab" id="t-mail" aria-controls="p-mail" aria-selected="false" tabindex="-1" type="button">Почта</button>
+      <button class="tab" role="tab" id="t-game" aria-controls="p-game" aria-selected="false" tabindex="-1" type="button">Игра</button>
+      <button class="tab" role="tab" id="t-qr" aria-controls="p-qr" aria-selected="false" tabindex="-1" type="button">QR-код</button>
+    </div>
+
+    <div class="panel" role="tabpanel" id="p-sms" aria-labelledby="t-sms">
+      <div class="msg">
+        <div class="msg-from">СМС от <span class="hot" data-id="1">BANK-INFO</span></div>
+        <div>ВНИМАНИЕ! Ваша карта заблокирована. <span class="hot" data-id="2">Разблокируйте её в течение 30 минут</span>, иначе средства будут списаны. Перейдите по ссылке <span class="hot" data-id="3">bank-pomoshch24.ru/verify</span> и <span class="hot" data-id="4">введите номер карты и код из СМС</span>.</div>
+      </div>
+      <ol class="finds">
+        <li data-id="1">Сообщение подписано BANK-INFO, а не названием банка. Настоящие уведомления приходят с официального номера банка или в его приложении.</li>
+        <li data-id="2">На разблокировку дают всего полчаса. Мошенникам важно, чтобы ты действовал в спешке и ни с кем не успел посоветоваться.</li>
+        <li data-id="3">Адрес bank-pomoshch24.ru только похож на банковский. На самом деле банку он не принадлежит.</li>
+        <li data-id="4">Зная номер карты и код из СМС, мошенники могут перевести с неё деньги. Сотрудники банка никогда не спрашивают их ни в переписке, ни по телефону.</li>
+      </ol>
+      <p class="check">Если пришло такое СМС, не переходи по ссылке. Открой приложение банка или попроси родителей позвонить по номеру с обратной стороны карты. Там скажут, заблокирована ли карта на самом деле.</p>
+    </div>
+
+    <div class="panel" role="tabpanel" id="p-chat" aria-labelledby="t-chat" hidden>
+      <div class="msg">
+        <div class="msg-from">Мессенджер, Дима из параллельного класса</div>
+        <div>Привет! <span class="hot" data-id="1">Проголосуй, пожалуйста, за мою сестру в конкурсе рисунков</span>, очень надо. Там нужно <span class="hot" data-id="2">войти через свой аккаунт и ввести код</span>, вот ссылка <span class="hot" data-id="3">golos-konkurs.top/vote</span></div>
+      </div>
+      <ol class="finds">
+        <li data-id="1">Дима пишет тебе редко, а тут вдруг просит о помощи. Так обычно выглядят сообщения со взломанного аккаунта, которые рассылаются всем его контактам.</li>
+        <li data-id="2">Чтобы проголосовать в конкурсе, не нужно входить в свой мессенджер. Если ввести номер и код на таком сайте, мошенники получат доступ к аккаунту и разошлют такое же сообщение твоим друзьям.</li>
+        <li data-id="3">Адрес golos-konkurs.top не принадлежит ни одному известному сервису. Похоже, что сайт сделали специально для этой рассылки.</li>
+      </ol>
+      <p class="check">Прежде чем что-то нажимать, спроси у Димы при встрече или по телефону, правда ли он это писал. Если окажется, что аккаунт взломали, предупреди общих знакомых, чтобы они не переходили по ссылке.</p>
+    </div>
+
+    <div class="panel" role="tabpanel" id="p-call" aria-labelledby="t-call" hidden>
+      <div class="msg">
+        <div class="msg-from">Звонок с незнакомого номера</div>
+        <div>«Здравствуйте, <span class="hot" data-id="1">это ваш сотовый оператор</span>. <span class="hot" data-id="2">Срок действия договора на вашу сим-карту заканчивается сегодня</span>, после этого номер отключат. Чтобы продлить договор, <span class="hot" data-id="3">продиктуйте код, который сейчас придёт вам в СМС</span>.»</div>
+      </div>
+      <ol class="finds">
+        <li data-id="1">Человек называет себя сотрудником оператора, но звонит с обычного мобильного номера. По голосу не понять, кто он на самом деле.</li>
+        <li data-id="2">Договор на сим-карту обычно действует без срока, и продлевать его не нужно. Слово «сегодня» добавлено, чтобы у тебя не осталось времени подумать.</li>
+        <li data-id="3">Код из СМС часто нужен для входа на Госуслуги или в банк. Тот, кому ты его продиктуешь, сможет зайти в твой аккаунт.</li>
+      </ol>
+      <p class="check">В таком разговоре лучше сразу положить трубку. Если остались сомнения, можно самому позвонить оператору по номеру с его официального сайта.</p>
+    </div>
+
+    <div class="panel" role="tabpanel" id="p-mail" aria-labelledby="t-mail" hidden>
+      <div class="msg">
+        <div class="msg-from">Письмо от Support Team, <span class="hot" data-id="1">security@account-support-mail.com</span></div>
+        <div><span class="hot" data-id="2">Уважаемый пользователь</span>! На ваш аккаунт поступила жалоба. <span class="hot" data-id="3">Если вы не подтвердите данные в течение 24 часов, аккаунт будет удалён без возможности восстановления.</span> Подтвердить данные можно на странице <span class="hot" data-id="4">accounts-support-security.com/login</span></div>
+      </div>
+      <ol class="finds">
+        <li data-id="1">Письмо пришло с account-support-mail.com, а этот адрес не связан с сервисом, где у тебя аккаунт. Настоящие письма приходят с официального адреса самого сервиса.</li>
+        <li data-id="2">К тебе обращаются «Уважаемый пользователь» и ни разу не называют по имени. Такое письмо можно разослать тысячам людей, ничего в нём не меняя.</li>
+        <li data-id="3">Аккаунт обещают удалить уже через сутки. Расчёт на то, что ты испугаешься и сразу перейдёшь по ссылке.</li>
+        <li data-id="4">В адресе ссылки нет названия сервиса, только общие слова вроде support и security. На таких сайтах просят ввести логин и пароль, и они сразу попадают к мошенникам.</li>
+      </ol>
+      <p class="check">Если письмо кажется важным, не нажимай на ссылку в нём. Открой сервис сам через приложение или закладку. Если с аккаунтом правда что-то не так, уведомление будет и там.</p>
+    </div>
+
+    <div class="panel" role="tabpanel" id="p-game" aria-labelledby="t-game" hidden>
+      <div class="msg">
+        <div class="msg-from">Чат онлайн-игры, игрок GiftBot</div>
+        <div><span class="hot" data-id="1">Раздаём 10 000 гемов в честь дня рождения игры!</span> <span class="hot" data-id="2">Акция действует только сегодня.</span> Чтобы забрать подарок, зайди на <span class="hot" data-id="3">free-gems-gift.ru</span> и <span class="hot" data-id="4">введи логин и пароль от своего аккаунта</span>.</div>
+      </div>
+      <ol class="finds">
+        <li data-id="1">В общем чате всем подряд обещают 10 000 гемов бесплатно. Разработчики игр не раздают столько валюты таким способом.</li>
+        <li data-id="2">Акция действует только сегодня, поэтому кажется, что думать некогда. На это мошенники и рассчитывают.</li>
+        <li data-id="3">За подарком предлагают перейти на free-gems-gift.ru, хотя настоящие награды приходят прямо в игру.</li>
+        <li data-id="4">На этом сайте просят логин и пароль от игры. Если их ввести, аккаунт вместе со всеми покупками может перейти к мошенникам.</li>
+      </ol>
+      <p class="check">Настоящие акции обычно объявляют на официальном сайте или в сообществе игры, а подарок приходит прямо в игру. Если сомневаешься, поищи новость там.</p>
+    </div>
+
+    <div class="panel" role="tabpanel" id="p-qr" aria-labelledby="t-qr" hidden>
+      <div class="msg">
+        <div class="msg-from">Объявление в подъезде</div>
+        <div>Уважаемые жильцы! <span class="hot" data-id="1">В связи с переходом на новую систему оплаты</span> отсканируйте <span class="hot" data-id="3">QR-код ниже</span> и оплатите обслуживание домофона. <span class="hot" data-id="2">Если оплата не поступит до 25 числа, ваши ключи будут заблокированы.</span></div>
+      </div>
+      <ol class="finds">
+        <li data-id="1">О смене способа оплаты обычно сообщают в квитанции или на сайте управляющей компании. А листок на двери подъезда может повесить кто угодно.</li>
+        <li data-id="2">Жильцам дают срок и грозят заблокировать ключи. Так людей торопят, чтобы они заплатили без проверки.</li>
+        <li data-id="3">QR-код ведёт на незнакомый сайт оплаты. Названия организации и её телефона на объявлении нет, так что узнать, кто собирает деньги, не получится.</li>
+      </ol>
+      <p class="check">Если в подъезде появилось такое объявление, покажи его родителям. Они могут позвонить в управляющую компанию и узнать, правда ли что-то изменилось.</p>
+    </div>
+
+    <div class="status">
+      <span class="muted small" aria-live="polite">Найдено <span id="found-n">0</span> из <span id="found-total">4</span></span>
+      <button class="btn" id="show-all" type="button">Показать все</button>
+    </div>
+    <p class="hint muted small" id="hint" aria-live="polite"></p>
+  </section>
+
+  <section id="zashchita">
+    <h2>Как защититься</h2>
+    <p>Если сообщение кажется странным, не отвечай на него сразу. Сайт или приложение банка лучше открыть самому, а сообщение показать родителям. Коды и пароли не называй никому, даже «поддержке» или знакомому.</p>
+    <h3>Что настроить заранее</h3>
+    <p>Если в почте и соцсетях включить двухфакторную защиту, для входа понадобится ещё и код. Для каждого сервиса лучше придумать отдельный пароль, чтобы после одного взлома остальные аккаунты остались в безопасности. Обновления телефона и приложений закрывают известные уязвимости, поэтому их не стоит откладывать.</p>
+  </section>
+
+  <section id="pomosh">
+    <h2>Если ты уже попался</h2>
+    <p>Если ты ввёл данные на подозрительном сайте или назвал код, действуй сразу. Так больше шансов сохранить деньги и аккаунт.</p>
+    <ol class="steps">
+      <li><label><input type="checkbox"><span>Расскажи родителям.</span></label></li>
+      <li><label><input type="checkbox"><span>Позвони в банк и заблокируй карту. Номер есть на обратной стороне карты и на сайте банка.</span></label></li>
+      <li><label><input type="checkbox"><span>Смени пароль и выйди из аккаунта на всех устройствах.</span></label></li>
+      <li><label><input type="checkbox"><span>Сохрани скриншоты переписки и номер, с которого писали.</span></label></li>
+      <li><label><input type="checkbox"><span>Вместе с родителями обратись в полицию по номеру 102 или в ближайшее отделение.</span></label></li>
+    </ol>
+    <p class="muted small">Выполненные шаги можно отмечать.</p>
+    <h3>Куда звонить</h3>
+    <table class="phones">
+      <tr><td>Банк России, бесплатно с мобильного</td><td><a href="tel:300">300</a></td></tr>
+      <tr><td>Банк России, бесплатно по России</td><td><a href="tel:88003003000">8&nbsp;800&nbsp;300-30-00</a></td></tr>
+      <tr><td>Полиция</td><td><a href="tel:102">102</a></td></tr>
+      <tr><td>Единый номер экстренных служб</td><td><a href="tel:112">112</a></td></tr>
+    </table>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <p>Сайт сделан в рамках индивидуального проекта «Фишинг: как распознать интернет-мошенничество и защититься от него». Автор <span class="fill">Фамилия Имя</span>, ученик(ца) <span class="fill">__</span> класса, <span class="fill">Название школы</span>. Руководитель проекта <span class="fill">Фамилия И. О.</span>, 2026&nbsp;год.</p>
+    <p>Источники</p>
+    <ul>
+      <li><a href="https://cbr.ru/press/event?id=28300" target="_blank" rel="noopener">Банк России, статистика хищений за 2025 год</a></li>
+      <li><a href="https://cbr.ru/analytics/ib/operations_survey/2025" target="_blank" rel="noopener">Банк России, обзор операций без согласия клиентов</a></li>
+      <li><a href="https://docs.apwg.org/reports/apwg_trends_report_q4_2025.pdf" target="_blank" rel="noopener">APWG, Phishing Activity Trends Report</a></li>
+      <li><a href="https://encyclopedia.kaspersky.ru/glossary/phishing" target="_blank" rel="noopener">Статья «Фишинг» в энциклопедии «Лаборатории Касперского»</a></li>
+    </ul>
+  </div>
+</footer>
+
+<script>
+(function () {
+  var $ = function (s, r) { return (r || document).querySelector(s); };
+  var $$ = function (s, r) { return Array.prototype.slice.call((r || document).querySelectorAll(s)); };
+
+  var tabs = $$('.tab');
+  var panels = $$('.panel');
+  var foundN = $('#found-n');
+  var foundTotal = $('#found-total');
+  var showAll = $('#show-all');
+  var hint = $('#hint');
+  var state = {};
+  var current = panels[0];
+
+  panels.forEach(function (p) {
+    var items = $$('.finds li', p);
+    state[p.id] = { found: {}, total: items.length };
+    items.forEach(function (li) {
+      li.insertAdjacentHTML('afterbegin', '<span class="n" aria-hidden="true">' + li.getAttribute('data-id') + '</span>');
+      li.hidden = true;
+    });
+    $$('.hot', p).forEach(function (h) {
+      h.setAttribute('role', 'button');
+      h.setAttribute('tabindex', '0');
+      h.setAttribute('aria-pressed', 'false');
+      h.addEventListener('click', function (e) { e.stopPropagation(); mark(p, h.getAttribute('data-id')); });
+      h.addEventListener('keydown', function (e) {
+        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); mark(p, h.getAttribute('data-id')); }
+      });
+    });
+    $('.msg', p).addEventListener('click', function () {
+      var s = state[p.id];
+      if (Object.keys(s.found).length < s.total) hint.textContent = 'Здесь подвоха нет. Попробуй другое место.';
+    });
+  });
+
+  var status = $('.status');
+  function place() {
+    var msg = $('.msg', current);
+    msg.parentNode.insertBefore(status, msg.nextSibling);
+    msg.parentNode.insertBefore(hint, status.nextSibling);
+  }
+
+  function update() {
+    var s = state[current.id];
+    var n = Object.keys(s.found).length;
+    foundN.textContent = n;
+    foundTotal.textContent = s.total;
+    showAll.hidden = n === s.total;
+    return n === s.total;
+  }
+
+  function mark(p, id) {
+    var s = state[p.id];
+    if (s.found[id]) return;
+    s.found[id] = true;
+    $$('.hot[data-id="' + id + '"]', p).forEach(function (h) {
+      h.classList.add('found');
+      h.setAttribute('aria-pressed', 'true');
+    });
+    $('.finds li[data-id="' + id + '"]', p).hidden = false;
+    hint.textContent = update() ? 'Все подозрительные места найдены.' : '';
+  }
+
+  function select(tab, focus) {
+    tabs.forEach(function (t) {
+      var on = t === tab;
+      t.setAttribute('aria-selected', on ? 'true' : 'false');
+      t.tabIndex = on ? 0 : -1;
+    });
+    panels.forEach(function (p) { p.hidden = p.id !== tab.getAttribute('aria-controls'); });
+    current = $('#' + tab.getAttribute('aria-controls'));
+    place();
+    hint.textContent = '';
+    update();
+    if (focus) tab.focus();
+  }
+
+  tabs.forEach(function (t, i) {
+    t.addEventListener('click', function () { select(t); });
+    t.addEventListener('keydown', function (e) {
+      var j = null;
+      if (e.key === 'ArrowRight') j = (i + 1) % tabs.length;
+      if (e.key === 'ArrowLeft') j = (i - 1 + tabs.length) % tabs.length;
+      if (e.key === 'Home') j = 0;
+      if (e.key === 'End') j = tabs.length - 1;
+      if (j !== null) { e.preventDefault(); select(tabs[j], true); }
+    });
+  });
+
+  showAll.addEventListener('click', function () {
+    $$('.finds li', current).forEach(function (li) { mark(current, li.getAttribute('data-id')); });
+  });
+
+  place();
+  update();
+})();
+</script>
+</body>
+</html>
